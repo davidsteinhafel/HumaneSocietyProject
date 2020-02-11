@@ -174,17 +174,26 @@ namespace HumaneSociety
                     db.SubmitChanges();
                     break;
                 case "read":
-                    var readEmployee = db.Employees.Where(e => e.FirstName == employee.FirstName).Where(x => x.LastName == employee.LastName).Where(y => y.EmployeeNumber == employee.EmployeeNumber).SingleOrDefault();
-                    Console.WriteLine(readEmployee);
+                    var readEmployee = db.Employees.Where(y => y.EmployeeNumber == employee.EmployeeNumber).SingleOrDefault();
+                    Console.Write($" First Name: {readEmployee.FirstName}, Last Name: {readEmployee.LastName}, Password: {readEmployee.Password}, ID: {readEmployee.EmployeeId}, Number: {readEmployee.EmployeeNumber}, Email: {readEmployee.Email}");
                     Console.ReadLine();
                     break;
                 case "update":
-                    var employeeOnDb = db.Employees.Where(e => e.FirstName == employee.FirstName).Where(x => x.LastName == employee.LastName).Where(y => y.EmployeeNumber == employee.EmployeeNumber).SingleOrDefault();
+                    var employeeOnDb = db.Employees.Where(y => y.EmployeeNumber == employee.EmployeeNumber).SingleOrDefault();
+                    employeeOnDb.FirstName = employee.FirstName;
+                    employeeOnDb.LastName = employee.LastName;
+                    employeeOnDb.Password = employee.Password;
+                    employeeOnDb.UserName = employee.UserName;
+                    employeeOnDb.EmployeeNumber = employee.EmployeeNumber;
+                    employeeOnDb.EmployeeId = employee.EmployeeId;
+                    employeeOnDb.Email = employee.Email;
                     db.SubmitChanges();
+
                     break;
                 case "delete":
-                    var deleteEmployeeOnDb = db.Employees.Where(e => e.FirstName == employee.FirstName).Where(x => x.LastName == employee.LastName).Where(y => y.EmployeeNumber == employee.EmployeeNumber).SingleOrDefault();
+                    var deleteEmployeeOnDb = db.Employees.Where(y => y.EmployeeNumber == employee.EmployeeNumber).SingleOrDefault();
                     db.Employees.DeleteOnSubmit(deleteEmployeeOnDb);
+                    db.SubmitChanges();
                     break;
             }
         }

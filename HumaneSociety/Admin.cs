@@ -12,7 +12,7 @@ namespace HumaneSociety
         {
             UserInterface.DisplayUserOptions("What is your password?");
             string password = UserInterface.GetUserInput();
-            if (password.ToLower() != "poiuyt")
+            if (password.ToLower() != "123")
             {
                 UserInterface.DisplayUserOptions("Incorrect password please try again or type exit");
             }
@@ -86,7 +86,6 @@ namespace HumaneSociety
             try
             {
                 Employee employee = new Employee();
-                employee.EmployeeId = int.Parse(UserInterface.GetStringData("employee Id", "the employee's"));
                 employee.EmployeeNumber = int.Parse(UserInterface.GetStringData("employee number", "the employee's"));
                 Query.RunEmployeeQueries(employee, "read");
             }
