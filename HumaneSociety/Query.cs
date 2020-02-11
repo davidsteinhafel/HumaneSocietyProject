@@ -166,18 +166,53 @@ namespace HumaneSociety
         // TODO: Allow any of the CRUD operations to occur here
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
-            throw new NotImplementedException();
+            
+            switch (UserInterface.GetUserInput().ToUpper())
+            {
+                case "CREATE":
+                    employee = new Employee();
+                    db.Employees.InsertOnSubmit(employee);
+                    break;
+                case "READ":
+                    var removeEmployee = db.Employees.Select(x => x.EmployeeNumber == employee.EmployeeNumber).First();
+                    Console.WriteLine(removeEmployee);
+                    break;
+                case "UPDATE":
+                    db.SubmitChanges();
+                    break;
+                case "DELETE":
+                    db.Employees.DeleteOnSubmit(employee);
+                    break;
+            }
         }
 
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
-        {
-            throw new NotImplementedException();
+        { 
+            //DID need check
+            Animal addNewAnimal = db.Animals.Where(x => x.AnimalId == animal.AnimalId).FirstOrDefault();
+            if (addNewAnimal == null)
+            {
+                throw new Exception();
+            }
+            else
+            {
+                addNewAnimal = new Animal();
+            }
         }
 
         internal static Animal GetAnimalByID(int id)
         {
-            throw new NotImplementedException();
+            //DID need check
+            var animalOnDb = db.Animals.Where(x => x.AnimalId == id).FirstOrDefault();
+            if (animalOnDb == null)
+            {
+                throw new NullReferenceException();
+            }
+            else
+            {
+                return animalOnDb;
+            }
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
@@ -187,7 +222,8 @@ namespace HumaneSociety
 
         internal static void RemoveAnimal(Animal animal)
         {
-            throw new NotImplementedException();
+            
+          
         }
         
         // TODO: Animal Multi-Trait Search
@@ -199,12 +235,13 @@ namespace HumaneSociety
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
-            throw new NotImplementedException();
+            
+            
         }
         
         internal static Room GetRoom(int animalId)
         {
-            throw new NotImplementedException();
+            var getRoom = db.Rooms.Where(x=> x.RoomId == animalId)
         }
         
         internal static int GetDietPlanId(string dietPlanName)
