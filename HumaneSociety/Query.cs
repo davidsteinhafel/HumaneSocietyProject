@@ -170,19 +170,19 @@ namespace HumaneSociety
             switch (UserInterface.GetUserInput().ToUpper())
             {
                 case "CREATE":
-                    employee = new Employee();
                     db.Employees.InsertOnSubmit(employee);
                     break;
                 case "READ":
-                    var removeEmployee = db.Employees.Select(x => x.EmployeeNumber == employee.EmployeeNumber).First();
-                    Console.WriteLine(removeEmployee);
+                    var readEmployee = db.Employees.Where(x => x.EmployeeNumber == employee.EmployeeNumber);
+                    Console.WriteLine(readEmployee);
                     break;
                 case "UPDATE":
-                    //change to default case?
+                    var employeeOnDb = db.Employees.Where(e => e.FirstName == employee.FirstName).Where(x => x.LastName == employee.LastName).Where(y => y.EmployeeNumber == employee.EmployeeNumber).SingleOrDefault();
                     db.SubmitChanges();
                     break;
                 case "DELETE":
-                    db.Employees.DeleteOnSubmit(employee);
+                    var deleteEmployeeOnDb = db.Employees.Where(e => e.FirstName == employee.FirstName).Where(x => x.LastName == employee.LastName).Where(y => y.EmployeeNumber == employee.EmployeeNumber).SingleOrDefault();
+                    db.Employees.DeleteOnSubmit(deleteEmployeeOnDb);
                     break;
             }
         }
@@ -216,8 +216,31 @@ namespace HumaneSociety
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
-        {            
-            throw new NotImplementedException();
+        {
+            var animalOnDb = db.Animals.Where(x => x.AnimalId == animalId).SingleOrDefault();
+            foreach (var items in updates)
+            {
+                switch (items.Key)
+                {
+                    case 1:
+                        var catagorOnDb = db.Categories.Where(x => x.Name == items.Value).SingleOrDefault();
+                        animalOnDb.CategoryId = catagorOnDb.CategoryId;
+                        db.SubmitChanges();
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                }
+            }
         }
 
         internal static void RemoveAnimal(Animal animal)
