@@ -178,6 +178,7 @@ namespace HumaneSociety
                     Console.WriteLine(removeEmployee);
                     break;
                 case "UPDATE":
+                    //change to default case?
                     db.SubmitChanges();
                     break;
                 case "DELETE":
@@ -203,12 +204,7 @@ namespace HumaneSociety
 
         internal static Animal GetAnimalByID(int id)
         {
-<<<<<<< HEAD
-            //DID need check
-            var animalOnDb = db.Animals.Where(x => x.AnimalId == id).FirstOrDefault();
-=======
             var animalOnDb = db.Animals.Where(a => a.AnimalId == id).FirstOrDefault();
->>>>>>> 2c7aa2c0278e6a79969f78f02e9bfa0990163bb0
             if (animalOnDb == null)
             {
                 throw new NullReferenceException();
@@ -239,20 +235,12 @@ namespace HumaneSociety
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
-<<<<<<< HEAD
-            
-            
-=======
             var categoryOnDb = db.Categories.Where(c => c.Name == categoryName).FirstOrDefault(); 
             return categoryOnDb.CategoryId;
->>>>>>> 2c7aa2c0278e6a79969f78f02e9bfa0990163bb0
         }
 
         internal static Room GetRoom(int animalId)
         {
-<<<<<<< HEAD
-            var getRoom = db.Rooms.Where(x=> x.RoomId == animalId)
-=======
             var roomOnDb = db.Rooms.Where(a => a.AnimalId == animalId).FirstOrDefault();
             if (roomOnDb == null)
             {
@@ -262,7 +250,6 @@ namespace HumaneSociety
             {
                 return roomOnDb;
             }
->>>>>>> 2c7aa2c0278e6a79969f78f02e9bfa0990163bb0
         }
         
         internal static int GetDietPlanId(string dietPlanName)
