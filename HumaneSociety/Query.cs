@@ -285,7 +285,42 @@ namespace HumaneSociety
         // TODO: Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
-            throw new NotImplementedException();
+            IQueryable<Animal> animals = db.Animals;
+            foreach (KeyValuePair<int, string> newAnimal in updates)
+            {
+                switch (newAnimal.Key)
+                {
+                    case 1:
+                        return animals = animals.Where(a => a.CategoryId == GetCategoryId(newAnimal.Value));
+
+                    case 2:
+                        return animals = animals.Where(a => a.Name == newAnimal.Value);
+
+                    case 3:
+                        return animals = animals.Where(a => a.Age == int.Parse(newAnimal.Value));
+
+                    case 4:
+                        return animals = animals.Where(a => a.Demeanor == newAnimal.Value);
+
+                    case 5:
+                        return animals = animals.Where(a => a.KidFriendly == bool.Parse(newAnimal.Value));
+
+                    case 6:
+                        return animals = animals.Where(a => a.PetFriendly == bool.Parse(newAnimal.Value));
+
+                    case 7:
+                        return animals = animals.Where(a => a.Weight == int.Parse(newAnimal.Value));
+
+                    case 8:
+                        return animals = animals.Where(a => a.AnimalId == int.Parse(newAnimal.Value));
+
+                    default:
+                        Console.WriteLine("Please enter a valid entry");
+                        Console.ReadLine();
+                        break;
+                }
+            }
+            return animals;
         }
 
         // TODO: Misc Animal Things
@@ -317,7 +352,6 @@ namespace HumaneSociety
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
-
             var adoptOnDb = db.Adoptions.Where(x => x.AnimalId == animal.AnimalId).Where(y => y.ClientId == client.ClientId).SingleOrDefault();
             var adoptStatus = db.Animals.Where(a => a.AdoptionStatus == animal.AdoptionStatus).SingleOrDefault().ToString();
             if (adoptStatus.ToLower() == "open")
@@ -328,8 +362,8 @@ namespace HumaneSociety
             {
                 Console.WriteLine("Unfortunately the animal requested has already been reserved for adoption");
             }
-
         }
+
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
             throw new NotImplementedException();
