@@ -167,14 +167,16 @@ namespace HumaneSociety
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
 
-            switch (UserInterface.GetUserInput().ToLower())
+            switch (crudOperation)
             {
                 case "create":
                     db.Employees.InsertOnSubmit(employee);
+                    db.SubmitChanges();
                     break;
                 case "read":
-                    var readEmployee = db.Employees.Where(x => x.EmployeeNumber == employee.EmployeeNumber);
+                    var readEmployee = db.Employees.Where(e => e.FirstName == employee.FirstName).Where(x => x.LastName == employee.LastName).Where(y => y.EmployeeNumber == employee.EmployeeNumber).SingleOrDefault();
                     Console.WriteLine(readEmployee);
+                    Console.ReadLine();
                     break;
                 case "update":
                     var employeeOnDb = db.Employees.Where(e => e.FirstName == employee.FirstName).Where(x => x.LastName == employee.LastName).Where(y => y.EmployeeNumber == employee.EmployeeNumber).SingleOrDefault();
