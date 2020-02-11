@@ -169,10 +169,17 @@ namespace HumaneSociety
             throw new NotImplementedException();
         }
 
-        // TODO: Animal CRUD Operations
+        // -----------------------------------------TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
-            throw new NotImplementedException();
+            
+            if (animal == null)
+            {
+                throw new NullReferenceException("animal");
+            }
+            db.Animals.InsertOnSubmit(animal);
+            db.SubmitChanges();
+            
         }
 
         internal static Animal GetAnimalByID(int id)
@@ -189,12 +196,55 @@ namespace HumaneSociety
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
-        {            
-            throw new NotImplementedException();
+        {
+            var animalOnDB = db.Animals.Where(a => a.AnimalId == animalId).SingleOrDefault();
+            foreach (var items in updates) //query through database using animalId.  for each over a dictionary witha switch case (animal.key = animal.value) switch over key in dictionary
+            {
+                switch (items.Key)
+                {
+                    case 1:
+                        var cata = db.Categories.Where(c => c.Name == items.Value).SingleOrDefault();
+                        animalOnDB.CategoryId = cata.CategoryId;
+                        break;
+                    case 2:
+                        animalOnDB.Name = items.Value;
+                        break;
+                    case 3:
+                        var age = db.Animals.Where(a => a.Name == items.Value).SingleOrDefault();
+                        animalOnDB.Age = age.Age;
+                        break;
+                    case 4:
+                        animalOnDB.Demeanor = items.Value;
+                        break;
+                    case 5:
+                        var kids = db.Animals.Where(k => k.Name == items.Value).SingleOrDefault();
+                        animalOnDB.KidFriendly = kids.KidFriendly;
+                        break;
+                    case 6:
+                        var pets = db.Animals.Where(p => p.Name == items.Value).SingleOrDefault();
+                        animalOnDB.PetFriendly = pets.PetFriendly;
+                        break;
+                    case 7:
+                        var wt = db.Animals.Where(w => w.Name == items.Value).SingleOrDefault();
+                        animalOnDB.Weight = wt.Weight;
+                        break;
+                }
+                string input = UserInterface.GetUserInput();
+                if (input.ToLower() == "8" || input.ToLower() == "finished")
+                {
+                    Query.UpdateAnimal(animalId, updates);
+                }
+                else
+                {
+                    updates = UserInterface.EnterSearchCriteria(updates, input);
+                    UpdateAnimal(animalId, updates);
+                }
+            }
         }
 
         internal static void RemoveAnimal(Animal animal)
         {
+            var removeAnimalOnDb = db.Animals.Where(r => r.Name = //????????);
             throw new NotImplementedException();
         }
         
