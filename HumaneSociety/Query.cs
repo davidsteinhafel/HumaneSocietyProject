@@ -167,20 +167,20 @@ namespace HumaneSociety
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
             
-            switch (UserInterface.GetUserInput().ToUpper())
+            switch (UserInterface.GetUserInput().ToLower())
             {
-                case "CREATE":
+                case "create":
                     db.Employees.InsertOnSubmit(employee);
                     break;
-                case "READ":
+                case "read":
                     var readEmployee = db.Employees.Where(x => x.EmployeeNumber == employee.EmployeeNumber);
                     Console.WriteLine(readEmployee);
                     break;
-                case "UPDATE":
+                case "update":
                     var employeeOnDb = db.Employees.Where(e => e.FirstName == employee.FirstName).Where(x => x.LastName == employee.LastName).Where(y => y.EmployeeNumber == employee.EmployeeNumber).SingleOrDefault();
                     db.SubmitChanges();
                     break;
-                case "DELETE":
+                case "delete":
                     var deleteEmployeeOnDb = db.Employees.Where(e => e.FirstName == employee.FirstName).Where(x => x.LastName == employee.LastName).Where(y => y.EmployeeNumber == employee.EmployeeNumber).SingleOrDefault();
                     db.Employees.DeleteOnSubmit(deleteEmployeeOnDb);
                     break;
@@ -245,8 +245,8 @@ namespace HumaneSociety
 
         internal static void RemoveAnimal(Animal animal)
         {
-            
-          
+            var animalOnDb = db.Animals.Where(x => x.AnimalId == animal.AnimalId).SingleOrDefault();
+            db.Animals.DeleteOnSubmit(animalOnDb);
         }
         
         // TODO: Animal Multi-Trait Search
