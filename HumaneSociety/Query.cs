@@ -201,26 +201,16 @@ namespace HumaneSociety
         // -----------------------------------------TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
-<<<<<<< HEAD
-            
-            if (animal == null)
-=======
-            //DID need check
             Animal addNewAnimal = db.Animals.Where(x => x.AnimalId == animal.AnimalId).FirstOrDefault();
             if (addNewAnimal == null)
             {
-                throw new Exception();
-            }
-            else
->>>>>>> f84c690cb461a6a80ca02dd69b0c6a6fb128dfb6
-            {
                 throw new NullReferenceException("animal");
             }
-            db.Animals.InsertOnSubmit(animal);
-            db.SubmitChanges();
-            
-        
-        
+            else
+            {
+                db.Animals.InsertOnSubmit(animal);
+                db.SubmitChanges();
+            }
         }
 
         internal static Animal GetAnimalByID(int id)
