@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace HumaneSociety
 {
     public static class Query
-    {        
+    {
         static HumaneSocietyDataContext db;
 
         static Query()
@@ -17,11 +17,11 @@ namespace HumaneSociety
 
         internal static List<USState> GetStates()
         {
-            List<USState> allStates = db.USStates.ToList();       
+            List<USState> allStates = db.USStates.ToList();
 
             return allStates;
         }
-            
+
         internal static Client GetClient(string userName, string password)
         {
             Client client = db.Clients.Where(c => c.UserName == userName && c.Password == password).Single();
@@ -55,7 +55,7 @@ namespace HumaneSociety
                 newAddress.AddressLine1 = streetAddress;
                 newAddress.City = null;
                 newAddress.USStateId = stateId;
-                newAddress.Zipcode = zipCode;                
+                newAddress.Zipcode = zipCode;
 
                 db.Addresses.InsertOnSubmit(newAddress);
                 db.SubmitChanges();
@@ -80,13 +80,13 @@ namespace HumaneSociety
             {
                 clientFromDb = db.Clients.Where(c => c.ClientId == clientWithUpdates.ClientId).Single();
             }
-            catch(InvalidOperationException e)
+            catch (InvalidOperationException e)
             {
                 Console.WriteLine("No clients have a ClientId that matches the Client passed in.");
                 Console.WriteLine("No update have been made.");
                 return;
             }
-            
+
             // update clientFromDb information with the values on clientWithUpdates (aside from address)
             clientFromDb.FirstName = clientWithUpdates.FirstName;
             clientFromDb.LastName = clientWithUpdates.LastName;
@@ -101,13 +101,13 @@ namespace HumaneSociety
             Address updatedAddress = db.Addresses.Where(a => a.AddressLine1 == clientAddress.AddressLine1 && a.USStateId == clientAddress.USStateId && a.Zipcode == clientAddress.Zipcode).FirstOrDefault();
 
             // if the address isn't found in the Db, create and insert it
-            if(updatedAddress == null)
+            if (updatedAddress == null)
             {
                 Address newAddress = new Address();
                 newAddress.AddressLine1 = clientAddress.AddressLine1;
                 newAddress.City = null;
                 newAddress.USStateId = clientAddress.USStateId;
-                newAddress.Zipcode = clientAddress.Zipcode;                
+                newAddress.Zipcode = clientAddress.Zipcode;
 
                 db.Addresses.InsertOnSubmit(newAddress);
                 db.SubmitChanges();
@@ -117,11 +117,11 @@ namespace HumaneSociety
 
             // attach AddressId to clientFromDb.AddressId
             clientFromDb.AddressId = updatedAddress.AddressId;
-            
+
             // submit changes
             db.SubmitChanges();
         }
-        
+
         internal static void AddUsernameAndPassword(Employee employee)
         {
             Employee employeeFromDb = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).FirstOrDefault();
@@ -162,11 +162,11 @@ namespace HumaneSociety
 
 
         //// TODO Items: ////
-        
+
         // TODO: Allow any of the CRUD operations to occur here
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
-            
+
             switch (UserInterface.GetUserInput().ToLower())
             {
                 case "create":
@@ -189,7 +189,7 @@ namespace HumaneSociety
 
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
-        { 
+        {
             //DID need check
             Animal addNewAnimal = db.Animals.Where(x => x.AnimalId == animal.AnimalId).FirstOrDefault();
             if (addNewAnimal == null)
@@ -248,17 +248,17 @@ namespace HumaneSociety
             var animalOnDb = db.Animals.Where(x => x.AnimalId == animal.AnimalId).SingleOrDefault();
             db.Animals.DeleteOnSubmit(animalOnDb);
         }
-        
+
         // TODO: Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
             throw new NotImplementedException();
         }
-         
+
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
-            var categoryOnDb = db.Categories.Where(c => c.Name == categoryName).FirstOrDefault(); 
+            var categoryOnDb = db.Categories.Where(c => c.Name == categoryName).FirstOrDefault();
             return categoryOnDb.CategoryId;
         }
 
@@ -274,7 +274,7 @@ namespace HumaneSociety
                 return roomOnDb;
             }
         }
-        
+
         internal static int GetDietPlanId(string dietPlanName)
         {
             var dietOnDb = db.DietPlans.Where(d => d.Name == dietPlanName).FirstOrDefault(); /*db.Employees.Where(e => e.UserName == userName).FirstOrDefault();*/
@@ -284,9 +284,17 @@ namespace HumaneSociety
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
-            throw new NotImplementedException();
+            var adoptOnDb = db.Adoptions.Where(x => x.AnimalId == animal.AnimalId).Where(y => y.ClientId == client.ClientId).SingleOrDefault();
+            var adoptStatus = db.Animals.Where(a => a.AdoptionStatus == animal.AdoptionStatus).SingleOrDefault().ToString();
+            if (adoptStatus.ToLower() == "open")
+            {
+                Console.WriteLine(adoptOnDb);
+            }
+            else
+            {
+                Console.WriteLine("Unfortunately the animal requested has already been reserved for adoption");
+            }
         }
-
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
             throw new NotImplementedException();
